@@ -1,0 +1,9 @@
+name: YzdPasswordFree
+version: 1.0
+main: yzdpasswordfree.yzdpasswordfree.YzdPasswordFree
+api-version: 1.16
+commands:
+  tpf:
+    description: plugin main command
+  yzdpasswordfree:
+    description: plugin main command

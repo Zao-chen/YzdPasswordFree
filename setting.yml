@@ -1,0 +1,5 @@
+login_command:
+  enable: true
+  command:
+    - "say 这是一个测试指令"
+#在这里输入null即可禁用指令
