@@ -1,5 +1,7 @@
 package yzdpasswordfree.yzdpasswordfree.commands;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,6 +18,12 @@ public class maincommand implements CommandExecutor , TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
         Plugin config = YzdPasswordFree.getProvidingPlugin(YzdPasswordFree.class);
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) //对于papi强依赖
+        {
+           sender.sendMessage(ChatColor.YELLOW+"[YPS] "+ChatColor.GREEN+"PlaceholderAPI cannot be found, PlaceholderAPI feature has been automatically disabled,plugin can't work(papi未接入,无法加载插件)");
+           return false;
+        }
+
         if(args.length==0)
         {
             player.sendMessage("§e[YPF]§aYzdPasswordFree插件,使用/yzdpasswordfree help获取帮助");
@@ -47,8 +55,8 @@ public class maincommand implements CommandExecutor , TabExecutor {
             }
             else if(args[0].equals("reload"))
             {
-
                 config.reloadConfig();
+                player.sendMessage("§e[YPF]§a重载成功");
             }
             else
             {
@@ -62,7 +70,7 @@ public class maincommand implements CommandExecutor , TabExecutor {
         return false;
     }
     @Override
-    public List<String> onTabComplete(CommandSender sendermm, Command coand, String alias, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if(args.length==1)
         {
             List<String> list = new ArrayList<>();
