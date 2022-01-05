@@ -10,6 +10,10 @@ import yzdpasswordfree.yzdpasswordfree.YzdPasswordFree;
 
 import java.util.Objects;
 
+/*
+ * 检测玩家成功登录
+ * 也就是会刷新ip
+*/
 public class loginevent implements Listener {
     @EventHandler
     public void joins(LoginEvent event) {

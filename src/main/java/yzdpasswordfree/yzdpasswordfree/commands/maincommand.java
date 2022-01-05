@@ -12,7 +12,11 @@ import yzdpasswordfree.yzdpasswordfree.YzdPasswordFree;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+/*
+ * 插件的主指令
+ */
 public class maincommand implements CommandExecutor , TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -24,13 +28,13 @@ public class maincommand implements CommandExecutor , TabExecutor {
            return false;
         }
 
-        if(args.length==0)
+        if(args.length==0) //判断长度
         {
             player.sendMessage("§e[YPF]§aYzdPasswordFree插件,使用/yzdpasswordfree help获取帮助");
         }
         else if(args.length==1)
         {
-            if(args[0].equals("help"))
+            if(args[0].equals("help")) //判断子指令
             {
                 player.sendMessage("§e[YPF]§a/yzdpasswordfree help - 获取帮助");
                 player.sendMessage("§e[YPF]§a/yzdpasswordfree reload - 重载插件");
@@ -38,7 +42,7 @@ public class maincommand implements CommandExecutor , TabExecutor {
             }
             else if (args[0].equals("type"))
             {
-                if(config.getConfig().getString(player.getName()+"_type").equals("auto"))
+                if(Objects.equals(config.getConfig().getString(player.getName() + "_type"), "auto"))
                 {
                     config.getConfig().set(player.getName()+"_type","manual");
                     config.saveConfig();
@@ -69,13 +73,17 @@ public class maincommand implements CommandExecutor , TabExecutor {
         }
         return false;
     }
+
+    /*
+     *子指令的tab补全
+     */
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if(args.length==1)
         {
             List<String> list = new ArrayList<>();
-            list.add("intercept");
-            list.add("reload");
+            list.add("help");
+            list.add("type");
             list.add("info");
             return list;
         }

@@ -26,8 +26,8 @@ public class joinevent implements Listener {
         Player player = event.getPlayer();
         Plugin config = YzdPasswordFree.getProvidingPlugin(YzdPasswordFree.class);
         String nowip = "%player_ip%";
-        nowip = PlaceholderAPI.setPlaceholders(player, nowip);
-        try {
+        nowip = PlaceholderAPI.setPlaceholders(player, nowip); //通过papi获取ip
+        try { //检测有没有ip
             if(Objects.requireNonNull(config.getConfig().getString(player.getName())).isEmpty())
             {
                 player.sendMessage("§e[YPF]§c你没有开启自动登录，当前ip："+nowip);
@@ -40,15 +40,17 @@ public class joinevent implements Listener {
             config.saveConfig();
             config.reloadConfig();
         }
+
+        //判断是否系统
         if(Objects.equals(config.getConfig().getString(player.getName()), nowip))
         {
             player.sendMessage("§e[YPF]§a已自动登录");
             File setting = new File(YzdPasswordFree.getPlugin(YzdPasswordFree.class).getDataFolder(),"setting.yml");
             FileConfiguration setting_f = YamlConfiguration.loadConfiguration(setting);
-            if(setting_f.getBoolean("login_command.enable"))
+            if(setting_f.getBoolean("login_command.enable")) //判断是否开启指令
             {
                 List<String> join_command = setting_f.getStringList("login_command.command");
-                for(String list_to_string : join_command)
+                for(String list_to_string : join_command) //输出列表指令
                 {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(),list_to_string);
                 }
