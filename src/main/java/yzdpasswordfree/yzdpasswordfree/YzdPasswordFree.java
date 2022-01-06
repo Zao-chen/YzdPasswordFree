@@ -18,7 +18,18 @@ public final class YzdPasswordFree extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        Logger logger = this.getLogger();
+
         // Plugin startup logic
+        /*检查更新*/
+        new UpdateChecker(this, 98996).getVersion(version -> {
+            if (this.getDescription().getVersion().equalsIgnoreCase(version))
+            {
+                logger.info(ChatColor.YELLOW+"[YPF] "+ChatColor.GREEN+"The plugin is up to date(插件已是最新版):"+version);
+            } else {
+                    logger.info(ChatColor.YELLOW+"[YPF] "+ChatColor.GREEN+"New version found(发现新版):"+ version+ "\nhttps://www.spigotmc.org/resources/yzdpasswordfree-let-your-player-login-without-password.98996/\n(请前往更新插件");
+                }}
+        );
 
         /*这里注意还是获取语言*/
         File setting = new File(YzdPasswordFree.getPlugin(YzdPasswordFree.class).getDataFolder(),"setting.yml");
@@ -28,16 +39,14 @@ public final class YzdPasswordFree extends JavaPlugin {
         int pluginId = 13816;
         Metrics metrics = new Metrics(this, pluginId);
 
-        Logger logger = this.getLogger();
-
         /*文件生成*/
         this.saveResource("setting.yml",false);
         this.saveResource("language-Chinese.yml",false);
         this.saveResource("language-English.yml",false);
 
         /*指令注册*/
-        Objects.requireNonNull(getCommand("yzdpasswordfree")).setExecutor(new maincommand());
-        Objects.requireNonNull(getCommand("yzdpasswordfree")).setTabCompleter(new maincommand());
+        Objects.requireNonNull(getCommand("ypf")).setExecutor(new maincommand());
+        Objects.requireNonNull(getCommand("ypf")).setTabCompleter(new maincommand());
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) //对于papi强依赖
         {

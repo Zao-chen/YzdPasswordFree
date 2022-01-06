@@ -8,3 +8,4 @@ record_ip: "The ip has been recorded, and will automatically log in next time, t
 manual_mode: "Currently in manual mode, ip will not be recorded"
 change_mode_to_manual: "Switched to manual authentication mode"
 change_mode_to_auto: "Switched to automatic authentication mode"
+change_ip: "Set successfully"

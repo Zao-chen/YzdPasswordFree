@@ -1,5 +1,6 @@
 package yzdpasswordfree.yzdpasswordfree.commands;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -8,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import yzdpasswordfree.yzdpasswordfree.YzdPasswordFree;
 
@@ -38,7 +40,6 @@ public class maincommand implements CommandExecutor , TabExecutor {
         }
         la_f = YamlConfiguration.loadConfiguration(la);
 
-        //sender sender = (sender) sender;
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) //对于papi强依赖
         {
            sender.sendMessage(ChatColor.YELLOW+"[YPS] "+ChatColor.GREEN+"PlaceholderAPI cannot be found, PlaceholderAPI feature has been automatically disabled,plugin can't work(papi未接入,无法加载插件)");
@@ -47,15 +48,16 @@ public class maincommand implements CommandExecutor , TabExecutor {
 
         if(args.length==0) //判断长度
         {
-            sender.sendMessage("§e[YPF]§ause /yzdpasswordfree help to find help(使用/yzdpasswordfree help获取帮助)");
+            sender.sendMessage("§e[YPF]§ause /ypf help to find help(使用/ypf help获取帮助)");
         }
         else if(args.length==1)
         {
             if(args[0].equals("help")) //帮助
             {
-                sender.sendMessage("§e[YPF]§a/yzdpasswordfree help - get help(获取帮助)");
-                sender.sendMessage("§e[YPF]§a/yzdpasswordfree reload - reload plugin(重载插件)");
-                sender.sendMessage("§e[YPF]§a/yzdpasswordfree type - Modify authentication mode(修改认证模式)");
+                sender.sendMessage("§e[YPF]§a/ypf help - get help(获取帮助)");
+                sender.sendMessage("§e[YPF]§a/ypf reload - reload plugin(重载插件)");
+                sender.sendMessage("§e[YPF]§a/ypf type - Modify authentication mode(修改认证模式)");
+                sender.sendMessage("§e[YPF]§a/ypf settp [ip] - Manually set ip(手动设置ip)");
             }
             else if (args[0].equals("type")) //更改模式
             {
@@ -76,17 +78,40 @@ public class maincommand implements CommandExecutor , TabExecutor {
             }
             else if(args[0].equals("reload")) //重载
             {
-                config.reloadConfig();
-                sender.sendMessage("§e[YPF]§areload successfully(重载成功)");
+                if(sender.hasPermission("yzdpasswordfree.commands.reload")) //检测是否有权限重载
+                {
+                    config.reloadConfig();
+                    sender.sendMessage("§e[YPF]§areload successfully(重载成功)");
+                }
+                else
+                {
+                    sender.sendMessage("§e[YPF]§cno permission(你没有权限)");
+                }
             }
             else
             {
-                sender.sendMessage("§e[YPF]§cUnknown syntax, use /yzdpasswordfree help to get help(未知语法，使用/yzdpasswordfree help获取帮助)");
+                sender.sendMessage("§e[YPF]§cUnknown syntax, use /ypf help to get help(未知语法，使用/ypf help获取帮助)");
+            }
+        }
+        else if(args.length==2)
+        {
+            if(args[0].equals("setip")) //设置ip
+            {
+                Player player = (Player) sender;
+                config.getConfig().set(sender.getName(), args[1]); //保存ip
+                config.saveConfig();
+                config.reloadConfig();
+                config.reloadConfig();
+                sender.sendMessage("§e[YPF]§a"+la_f.getString("change_ip"));
+            }
+            else
+            {
+                sender.sendMessage("§e[YPF]§cUnknown syntax, use /ypf help to get help(未知语法，使用/ypf help获取帮助)");
             }
         }
         else
         {
-            sender.sendMessage("§e[YPF]§cUnknown syntax, use /yzdpasswordfree help to get help(未知语法，使用/yzdpasswordfree help获取帮助)");
+            sender.sendMessage("§e[YPF]§cUnknown syntax, use /ypf help to get help(未知语法，使用/ypf help获取帮助)");
         }
         return false;
     }
@@ -102,6 +127,7 @@ public class maincommand implements CommandExecutor , TabExecutor {
             list.add("help");
             list.add("type");
             list.add("info");
+            list.add("setip");
             return list;
         }
         return null;

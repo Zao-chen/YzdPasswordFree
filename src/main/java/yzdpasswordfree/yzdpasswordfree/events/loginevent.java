@@ -42,7 +42,7 @@ public class loginevent implements Listener {
         if(Objects.equals(config.getConfig().getString(event.getPlayer().getName() + "_type"), "auto")) {
             String nowip = "%player_ip%";
             nowip = PlaceholderAPI.setPlaceholders(player, nowip); //通过papi获取ip
-            config.getConfig().set(event.getPlayer().getName(), nowip); //报错ip
+            config.getConfig().set(event.getPlayer().getName(), nowip); //保存ip
             config.saveConfig();
             config.reloadConfig();
             player.sendMessage("§e[YPF]§a"+la_f.getString("record_ip")+ nowip);
