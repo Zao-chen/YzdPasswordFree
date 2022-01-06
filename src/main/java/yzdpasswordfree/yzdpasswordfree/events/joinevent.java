@@ -24,18 +24,33 @@ public class joinevent implements Listener {
     @EventHandler
     public void joins(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+
+        /*文件读取*/
         Plugin config = YzdPasswordFree.getProvidingPlugin(YzdPasswordFree.class);
+        File setting = new File(YzdPasswordFree.getPlugin(YzdPasswordFree.class).getDataFolder(),"setting.yml");
+        FileConfiguration setting_f = YamlConfiguration.loadConfiguration(setting);
+        File la;
+        if(Objects.equals(setting_f.getString("language"), "Chinese")) //匹配语言进行获取
+        {
+            la = new File(YzdPasswordFree.getPlugin(YzdPasswordFree.class).getDataFolder(),"language-Chinese.yml");
+        }
+        else
+        {
+            la = new File(YzdPasswordFree.getPlugin(YzdPasswordFree.class).getDataFolder(),"language-English.yml");
+        }
+        FileConfiguration la_f = YamlConfiguration.loadConfiguration(la);
+
         String nowip = "%player_ip%";
         nowip = PlaceholderAPI.setPlaceholders(player, nowip); //通过papi获取ip
         try { //检测有没有ip
             if(Objects.requireNonNull(config.getConfig().getString(player.getName())).isEmpty())
             {
-                player.sendMessage("§e[YPF]§c你没有开启自动登录，当前ip："+nowip);
+                player.sendMessage("§e[YPF]§c"+la_f.getString("no_auto")+nowip);
             }
         }
         catch (Exception e)
         {
-            player.sendMessage("§e[YPF]§c你没有开启自动登录，当前ip："+nowip);
+            player.sendMessage("§e[YPF]§c"+la_f.getString("no_auto")+nowip);
             config.getConfig().set(player.getName()+"_type","auto");
             config.saveConfig();
             config.reloadConfig();
@@ -44,9 +59,7 @@ public class joinevent implements Listener {
         //判断是否系统
         if(Objects.equals(config.getConfig().getString(player.getName()), nowip))
         {
-            player.sendMessage("§e[YPF]§a已自动登录");
-            File setting = new File(YzdPasswordFree.getPlugin(YzdPasswordFree.class).getDataFolder(),"setting.yml");
-            FileConfiguration setting_f = YamlConfiguration.loadConfiguration(setting);
+            player.sendMessage("§e[YPF]§a"+la_f.getString("auto_login"));
             if(setting_f.getBoolean("login_command.enable")) //判断是否开启指令
             {
                 List<String> join_command = setting_f.getStringList("login_command.command");
@@ -59,7 +72,7 @@ public class joinevent implements Listener {
         }
         else
         {
-            player.sendMessage("§e[YPF]§c无法自动登录，当前ip："+nowip);
+            player.sendMessage("§e[YPF]§c"+la_f.getString("different_ip")+nowip);
         }
     }
 }

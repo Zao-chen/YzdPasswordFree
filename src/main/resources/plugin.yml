@@ -1,5 +1,5 @@
 name: YzdPasswordFree
-version: 1.0
+version: 0.9-beta
 main: yzdpasswordfree.yzdpasswordfree.YzdPasswordFree
 api-version: 1.16
 commands:

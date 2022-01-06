@@ -1,5 +1,7 @@
+language: "Chinese"
+#You can choose Chinese or English
+#你可以选择中文或英文
 login_command:
   enable: true
   command:
     - "say 这是一个测试指令"
-#在这里输入null即可禁用指令
