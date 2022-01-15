@@ -48,51 +48,28 @@ public final class YzdPasswordFree extends JavaPlugin {
         Objects.requireNonNull(getCommand("ypf")).setExecutor(new maincommand());
         Objects.requireNonNull(getCommand("ypf")).setTabCompleter(new maincommand());
 
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) //对于papi强依赖
+        /*一些注册*/
+        saveDefaultConfig();
+        if(Objects.equals(setting_f.getString("language"), "Chinese"))
         {
-            /*一些注册*/
-            saveDefaultConfig();
-            if(Objects.equals(setting_f.getString("language"), "Chinese"))
-            {
-                /*获取中文*/
-                File zh = new File(YzdPasswordFree.getPlugin(YzdPasswordFree.class).getDataFolder(),"language-Chinese.yml");
-                FileConfiguration zh_f = YamlConfiguration.loadConfiguration(zh);
-                logger.info(ChatColor.YELLOW+"[YPS] "+zh_f.getString("have_papi"));
-                getServer().getPluginManager().registerEvents(new joinevent(),this);
-                getServer().getPluginManager().registerEvents(new loginevent(),this);
-            }
-            else if(Objects.equals(setting_f.getString("language"), "English")){
-                /*获取英文*/
-                File en = new File(YzdPasswordFree.getPlugin(YzdPasswordFree.class).getDataFolder(),"language-English.yml");
-                FileConfiguration en_f = YamlConfiguration.loadConfiguration(en);
-                logger.info(ChatColor.YELLOW+"[YPS] "+en_f.getString("have_papi"));
-                getServer().getPluginManager().registerEvents(new joinevent(),this);
-                getServer().getPluginManager().registerEvents(new loginevent(),this);
-            }
-            else
-            {
-                logger.info(ChatColor.YELLOW+"[YPS] Language cannot be obtained, please check Setting.yml!");
-            }
+            /*获取中文*/
+            File zh = new File(YzdPasswordFree.getPlugin(YzdPasswordFree.class).getDataFolder(),"language-Chinese.yml");
+            FileConfiguration zh_f = YamlConfiguration.loadConfiguration(zh);
+            logger.info(ChatColor.YELLOW+"[YPS] "+zh_f.getString("have_papi"));
+            getServer().getPluginManager().registerEvents(new joinevent(),this);
+            getServer().getPluginManager().registerEvents(new loginevent(),this);
         }
-        else //如果没有找到papi
+        else if(Objects.equals(setting_f.getString("language"), "English")){
+            /*获取英文*/
+            File en = new File(YzdPasswordFree.getPlugin(YzdPasswordFree.class).getDataFolder(),"language-English.yml");
+            FileConfiguration en_f = YamlConfiguration.loadConfiguration(en);
+            logger.info(ChatColor.YELLOW+"[YPS] "+en_f.getString("have_papi"));
+            getServer().getPluginManager().registerEvents(new joinevent(),this);
+            getServer().getPluginManager().registerEvents(new loginevent(),this);
+        }
+        else
         {
-            if(Objects.equals(setting_f.getString("language"), "Chinese"))
-            {
-                /*获取中文*/
-                File zh = new File(YzdPasswordFree.getPlugin(YzdPasswordFree.class).getDataFolder(),"language-Chinese.yml");
-                FileConfiguration zh_f = YamlConfiguration.loadConfiguration(zh);
-                logger.info(ChatColor.YELLOW+"[YPS] "+zh_f.getString("no_papi"));
-            }
-            else if(Objects.equals(setting_f.getString("language"), "English")){
-                /*获取英文*/
-                File en = new File(YzdPasswordFree.getPlugin(YzdPasswordFree.class).getDataFolder(),"language-English.yml");
-                FileConfiguration en_f = YamlConfiguration.loadConfiguration(en);
-                logger.info(ChatColor.YELLOW+"[YPS] "+en_f.getString("no_papi"));
-            }
-            else
-            {
-                logger.info(ChatColor.YELLOW+"[YPS] Language cannot be obtained, please check Setting.yml!");
-            }
+            logger.info(ChatColor.YELLOW+"[YPS] Language cannot be obtained, please check Setting.yml!");
         }
     }
 

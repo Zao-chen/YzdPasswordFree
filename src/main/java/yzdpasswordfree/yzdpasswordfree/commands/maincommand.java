@@ -1,6 +1,5 @@
 package yzdpasswordfree.yzdpasswordfree.commands;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -9,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import yzdpasswordfree.yzdpasswordfree.YzdPasswordFree;
 
@@ -40,12 +38,6 @@ public class maincommand implements CommandExecutor , TabExecutor {
         }
         la_f = YamlConfiguration.loadConfiguration(la);
 
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) //对于papi强依赖
-        {
-           sender.sendMessage(ChatColor.YELLOW+"[YPS] "+ChatColor.GREEN+"PlaceholderAPI cannot be found, PlaceholderAPI feature has been automatically disabled,plugin can't work(papi未接入,无法加载插件)");
-           return false;
-        }
-
         if(args.length==0) //判断长度
         {
             sender.sendMessage("§e[YPF]§ause /ypf help to find help(使用/ypf help获取帮助)");
@@ -61,20 +53,26 @@ public class maincommand implements CommandExecutor , TabExecutor {
             }
             else if (args[0].equals("type")) //更改模式
             {
+                /*改为手动模式*/
                 if(Objects.equals(config.getConfig().getString(sender.getName() + "_type"), "auto"))
                 {
                     config.getConfig().set(sender.getName()+"_type","manual");
-                    config.saveConfig();
-                    config.reloadConfig();
                     sender.sendMessage("§e[YPF]§a"+la_f.getString("change_mode_to_manual"));
                 }
-                else
+                /*改为自动模式*/
+                else if(Objects.equals(config.getConfig().getString(sender.getName() + "_type"), "no"))
                 {
                     config.getConfig().set(sender.getName()+"_type","auto");
-                    config.saveConfig();
-                    config.reloadConfig();
                     sender.sendMessage("§e[YPF]§a"+la_f.getString("change_mode_to_auto"));
                 }
+                /*关闭自动登录*/
+                else
+                {
+                    config.getConfig().set(sender.getName()+"_type","no");
+                    sender.sendMessage("§e[YPF]§a"+la_f.getString("change_mode_to_no"));
+                }
+                config.saveConfig();
+                config.reloadConfig();
             }
             else if(args[0].equals("reload")) //重载
             {
@@ -97,7 +95,6 @@ public class maincommand implements CommandExecutor , TabExecutor {
         {
             if(args[0].equals("setip")) //设置ip
             {
-                Player player = (Player) sender;
                 config.getConfig().set(sender.getName(), args[1]); //保存ip
                 config.saveConfig();
                 config.reloadConfig();
@@ -126,7 +123,7 @@ public class maincommand implements CommandExecutor , TabExecutor {
             List<String> list = new ArrayList<>();
             list.add("help");
             list.add("type");
-            list.add("info");
+            list.add("reload");
             list.add("setip");
             return list;
         }

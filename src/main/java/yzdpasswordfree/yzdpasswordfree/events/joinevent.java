@@ -1,7 +1,6 @@
 package yzdpasswordfree.yzdpasswordfree.events;
 
 import fr.xephi.authme.api.v3.AuthMeApi;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -40,8 +39,7 @@ public class joinevent implements Listener {
         }
         FileConfiguration la_f = YamlConfiguration.loadConfiguration(la);
 
-        String nowip = "%player_ip%";
-        nowip = PlaceholderAPI.setPlaceholders(player, nowip); //通过papi获取ip
+        String nowip = Objects.requireNonNull(player.getAddress()).getHostString(); //获取ip
         try { //检测有没有ip
             if(Objects.requireNonNull(config.getConfig().getString(player.getName())).isEmpty())
             {
@@ -55,8 +53,12 @@ public class joinevent implements Listener {
             config.saveConfig();
             config.reloadConfig();
         }
-
-        //判断是否系统
+        if(Objects.requireNonNull(config.getConfig().getString(player.getName() + "_type")).equals("no"))
+        {
+            player.sendMessage("§e[YPF]§c"+la_f.getString("no_auto")+nowip); //如果没有开启自动登录
+            return;
+        }
+        //判断是否相同
         if(Objects.equals(config.getConfig().getString(player.getName()), nowip))
         {
             player.sendMessage("§e[YPF]§a"+la_f.getString("auto_login"));

@@ -1,7 +1,6 @@
 package yzdpasswordfree.yzdpasswordfree.events;
 
 import fr.xephi.authme.events.LoginEvent;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -41,7 +40,7 @@ public class loginevent implements Listener {
         /*如果开启了自动模式*/
         if(Objects.equals(config.getConfig().getString(event.getPlayer().getName() + "_type"), "auto")) {
             String nowip = "%player_ip%";
-            nowip = PlaceholderAPI.setPlaceholders(player, nowip); //通过papi获取ip
+            nowip = player.getAddress().getHostString(); //获取ip
             config.getConfig().set(event.getPlayer().getName(), nowip); //保存ip
             config.saveConfig();
             config.reloadConfig();
