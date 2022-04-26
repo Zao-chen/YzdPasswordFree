@@ -1,4 +1,5 @@
 #English
+head: "§e[YPF]§c"
 have_papi: "§ePlugin has been loaded normally"
 no_papi: "§eLack of papi, this plugin strongly depends on papi"
 auto_login: "Logged in automatically"

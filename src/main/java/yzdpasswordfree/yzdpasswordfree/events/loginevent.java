@@ -34,7 +34,7 @@ public class loginevent implements Listener {
             la = new File(YzdPasswordFree.getPlugin(YzdPasswordFree.class).getDataFolder(),"language-English.yml");
         }
         la_f = YamlConfiguration.loadConfiguration(la);
-
+        String head = la_f.getString("head"); //前缀
         Player player = event.getPlayer();
 
         /*如果开启了自动模式*/
@@ -44,11 +44,11 @@ public class loginevent implements Listener {
             config.getConfig().set(event.getPlayer().getName(), nowip); //保存ip
             config.saveConfig();
             config.reloadConfig();
-            player.sendMessage("§e[YPF]§a"+la_f.getString("record_ip")+ nowip);
+            player.sendMessage(head+la_f.getString("record_ip")+ nowip);
         }
         else //如果没有开启
         {
-            player.sendMessage("§e[YPF]§a"+la_f.getString("manual_mode"));
+            player.sendMessage(head+la_f.getString("manual_mode"));
         }
     }
 }

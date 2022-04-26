@@ -1,4 +1,5 @@
 #中文语言文件
+head: "§7§l[§6白名系统§7§l] §r"
 have_papi: "§e插件已正常加载"
 no_papi: "§e缺少papi，本插件对papi强依赖"
 auto_login: "已自动登录"

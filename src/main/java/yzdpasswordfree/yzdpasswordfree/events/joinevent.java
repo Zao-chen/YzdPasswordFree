@@ -39,42 +39,43 @@ public class joinevent implements Listener {
         }
         FileConfiguration la_f = YamlConfiguration.loadConfiguration(la);
 
+        String head = la_f.getString("head");
         String nowip = Objects.requireNonNull(player.getAddress()).getHostString(); //获取ip
         try { //检测有没有ip
             if(Objects.requireNonNull(config.getConfig().getString(player.getName())).isEmpty())
             {
-                player.sendMessage("§e[YPF]§c"+la_f.getString("no_auto")+nowip);
+                player.sendMessage(head+la_f.getString("no_auto")+nowip);
             }
         }
         catch (Exception e)
         {
-            player.sendMessage("§e[YPF]§c"+la_f.getString("no_auto")+nowip);
+            player.sendMessage(head+la_f.getString("no_auto")+nowip);
             config.getConfig().set(player.getName()+"_type","auto");
             config.saveConfig();
             config.reloadConfig();
         }
         if(Objects.requireNonNull(config.getConfig().getString(player.getName() + "_type")).equals("no"))
         {
-            player.sendMessage("§e[YPF]§c"+la_f.getString("no_auto")+nowip); //如果没有开启自动登录
+            player.sendMessage(head+la_f.getString("no_auto")+nowip); //如果没有开启自动登录
             return;
         }
         //判断是否相同
         if(Objects.equals(config.getConfig().getString(player.getName()), nowip))
         {
-            player.sendMessage("§e[YPF]§a"+la_f.getString("auto_login"));
+            player.sendMessage(head+la_f.getString("auto_login"));
             if(setting_f.getBoolean("login_command.enable")) //判断是否开启指令
             {
                 List<String> join_command = setting_f.getStringList("login_command.command");
                 for(String list_to_string : join_command) //输出列表指令
                 {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(),list_to_string);
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(),list_to_string.replace("{player}",player.getName()));
                 }
             }
             AuthMeApi.getInstance().forceLogin(player);
         }
         else
         {
-            player.sendMessage("§e[YPF]§c"+la_f.getString("different_ip")+nowip);
+            player.sendMessage(head+la_f.getString("different_ip")+nowip);
         }
     }
 }

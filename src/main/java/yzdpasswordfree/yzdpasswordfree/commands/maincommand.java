@@ -37,7 +37,7 @@ public class maincommand implements CommandExecutor , TabExecutor {
             la = new File(YzdPasswordFree.getPlugin(YzdPasswordFree.class).getDataFolder(),"language-English.yml");
         }
         la_f = YamlConfiguration.loadConfiguration(la);
-
+        String head = la_f.getString("head");
         if(args.length==0) //判断长度
         {
             sender.sendMessage("§e[YPF]§ause /ypf help to find help(使用/ypf help获取帮助)");
@@ -57,19 +57,19 @@ public class maincommand implements CommandExecutor , TabExecutor {
                 if(Objects.equals(config.getConfig().getString(sender.getName() + "_type"), "auto"))
                 {
                     config.getConfig().set(sender.getName()+"_type","manual");
-                    sender.sendMessage("§e[YPF]§a"+la_f.getString("change_mode_to_manual"));
+                    sender.sendMessage(head+la_f.getString("change_mode_to_manual"));
                 }
                 /*改为自动模式*/
                 else if(Objects.equals(config.getConfig().getString(sender.getName() + "_type"), "no"))
                 {
                     config.getConfig().set(sender.getName()+"_type","auto");
-                    sender.sendMessage("§e[YPF]§a"+la_f.getString("change_mode_to_auto"));
+                    sender.sendMessage(head+la_f.getString("change_mode_to_auto"));
                 }
                 /*关闭自动登录*/
                 else
                 {
                     config.getConfig().set(sender.getName()+"_type","no");
-                    sender.sendMessage("§e[YPF]§a"+la_f.getString("change_mode_to_no"));
+                    sender.sendMessage(head+la_f.getString("change_mode_to_no"));
                 }
                 config.saveConfig();
                 config.reloadConfig();
@@ -99,7 +99,7 @@ public class maincommand implements CommandExecutor , TabExecutor {
                 config.saveConfig();
                 config.reloadConfig();
                 config.reloadConfig();
-                sender.sendMessage("§e[YPF]§a"+la_f.getString("change_ip"));
+                sender.sendMessage(head+la_f.getString("change_ip"));
             }
             else
             {
